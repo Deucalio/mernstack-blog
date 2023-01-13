@@ -1,0 +1,23 @@
+{
+  "name": "mernstack-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deucalio/mernstack-blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deucalio/mernstack-blog/issues"
+  },
+  "homepage": "https://github.com/Deucalio/mernstack-blog#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
