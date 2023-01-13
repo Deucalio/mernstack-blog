@@ -4,11 +4,8 @@ const port = 3000;
 const cors = require("cors");
 
 // app.use(cors());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  })
-);
+app.use(cors());
+app.use(express.json()) //useful for working with req.body obj
 
 let DATA = [
   {
@@ -42,6 +39,14 @@ app.delete("/api/:id", (req, res) => {
   // res.send(req.params.id)
   res.json(DATA);
 });
+
+app.post("/login", (req,res) => {
+    // res.json()
+    // res.send(req.body)
+    console.log(req.body)
+    res.json({msg: "Set", data: req.body})
+    // res.json(req.body)
+})
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

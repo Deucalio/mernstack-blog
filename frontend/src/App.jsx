@@ -27,10 +27,26 @@ function App() {
   }, [data]);
 
   const deleteBtn = async (id) => {
-    const response = await fetch(`http://localhost:3000/api/${String(id)}`, 
-    {method: "DELETE"});
+    const response = await fetch(`http://localhost:3000/api/${String(id)}`, {
+      method: "DELETE",
+    });
     const obj = await response.json();
     setData(obj);
+  };
+
+  const sendPostReq = async () => {
+    const req = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "Ali@gmail.com",
+        password: "Hammad",
+      }),
+    });
+    const res = await req.json()
+    console.log("res",res)
   };
 
   let tags;
@@ -53,6 +69,7 @@ function App() {
     <div className="App">
       <p>Hello</p>
       <div>{tags}</div>
+      <button type="submit" onClick={sendPostReq}>Send Post Req</button>
     </div>
   );
 }
