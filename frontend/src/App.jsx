@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
-function App() {
+const App = () => {
   const [data, setData] = useState([]);
+
 
   useEffect(() => {
     let ignore = false;

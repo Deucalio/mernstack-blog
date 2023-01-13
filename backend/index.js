@@ -41,11 +41,8 @@ app.delete("/api/:id", (req, res) => {
 });
 
 app.post("/login", (req,res) => {
-    // res.json()
-    // res.send(req.body)
     console.log(req.body)
     res.json({msg: "Set", data: req.body})
-    // res.json(req.body)
 })
 
 app.listen(port, () => {
