@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 const App = () => {
   const [data, setData] = useState([]);
 
-
   useEffect(() => {
     let ignore = false;
     async function getData() {
@@ -46,8 +45,8 @@ const App = () => {
         password: "Hammad",
       }),
     });
-    const res = await req.json()
-    console.log("res",res)
+    const res = await req.json();
+    console.log("res", res);
   };
 
   let tags;
@@ -67,12 +66,19 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <p>Hello</p>
+    <div className="App m-4">
+      <p className="text-emerald-600 text-2xl">Hello World!</p>
       <div>{tags}</div>
-      <button type="submit" onClick={sendPostReq}>Send Post Req</button>
+      <button
+        className="text-sm py-1 px-2 bg-blue-500 text-white rounded-md
+      "
+        type="submit"
+        onClick={sendPostReq}
+      >
+        Send Post Req
+      </button>
     </div>
   );
-}
+};
 
 export default App;
