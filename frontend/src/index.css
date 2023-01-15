@@ -6,11 +6,21 @@
 
 body{
     font-family: "Oswald", sans-serif;
-    background-color: #F7F5EB;
+    /* background-color: #F7F5EB; */
+    background-color: #0F0E0E; 
 }
 
-section{
+section:first-child{
    background-image: 
             linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
             url("https://images.pushsquare.com/a3306e0dbc2ff/the-last-of-us-hbo-1.large.jpg");
+}
+
+figure > div > p {
+  /* limits number of lines to 2 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
 }
