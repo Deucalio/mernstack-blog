@@ -1,11 +1,27 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const Article = require("./models/article");
+
+require("dotenv").config();
 const app = express();
-const port = 3000;
+const port = 3000 || process.env.PORT;
 const cors = require("cors");
 
-// app.use(cors());
 app.use(cors());
-app.use(express.json()) //useful for working with req.body obj
+app.use(express.json()); //useful for working with req.body obj
+
+mongoose.set("strictQuery", true);
+
+try {
+  // Connect to the MongoDB cluster
+  mongoose.connect(
+    process.env.MONGOSTRING,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => console.log("Mongoose is connected")
+  );
+} catch (e) {
+  console.log("could not connect");
+}
 
 let DATA = [
   {
@@ -30,6 +46,11 @@ let DATA = [
   },
 ];
 
+app.get("/", async (req, res) => {
+  const user = await Article.find({});
+  console.log(user);
+});
+
 app.get("/api", (req, res) => {
   res.json(DATA);
 });
@@ -40,10 +61,27 @@ app.delete("/api/:id", (req, res) => {
   res.json(DATA);
 });
 
-app.post("/login", (req,res) => {
-    console.log(req.body)
-    res.json({msg: "Set", data: req.body})
-})
+app.post("/upload", async (req, res) => {
+  try {
+    const newImage = new Article({
+      coverImgUrl: req.body.imageUrl,
+    });
+    await newImage.save();
+    res.json(newImage);
+  } catch (err) {
+    console.error("Something went wrong", err);
+  }
+});
+
+app.get('/getLatest', async (req, res) => {
+  const getImage = await Image.findOne().sort({ _id: -1 });
+  res.json(getImage.imageUrl);
+});
+
+app.post("/login", (req, res) => {
+  console.log(req.body);
+  res.json({ msg: "Set", data: req.body });
+});
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
