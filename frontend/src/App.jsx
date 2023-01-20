@@ -66,7 +66,7 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <div className="App m-16 p-16 text-white tex-xl outline">
       {/* <p className="text-emerald-600 text-2xl">Hello World!</p>
       <div>{tags}</div>
       <button
@@ -77,6 +77,10 @@ const App = () => {
       >
         Send Post Req
       </button> */}
+
+      {/* Upload Image (TEST) */}
+
+      <UploadWidget />
     </div>
   );
 };
