@@ -80,7 +80,41 @@ const App = () => {
 
       {/* Upload Image (TEST) */}
 
-      <UploadWidget />
+      <div className="carousel w-full">
+        <div id="item1" className="carousel-item w-full">
+          <img src="https://placeimg.com/800/200/arch" className="w-full" />
+        </div>
+        <div id="item2" className="carousel-item w-full">
+          <img src="https://placeimg.com/800/200/arch" className="w-full" />
+        </div>
+        <div id="item3" className="carousel-item w-full">
+          <img src="https://placeimg.com/800/200/arch" className="w-full" />
+        </div>
+        <div id="item4" className="carousel-item w-full">
+        <div
+            class="pointer-events-none flex flex-col gap-3 rounded-sm border-l-4 border-l-rose-900 bg-black/30 p-4 h-4/5 justify-center"
+          >
+            <p class="text-xl text-[#E5E5CB] md:text-2xl">
+              The Last of Us: HBO's post apocalyptic series met with
+              near-perfect score
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-center w-full py-2 gap-2">
+        <a href="#item1" className="btn btn-xs">
+          1
+        </a>
+        <a href="#item2" className="btn btn-xs">
+          2
+        </a>
+        <a href="#item3" className="btn btn-xs">
+          3
+        </a>
+        <a href="#item4" className="btn btn-xs">
+          <p class="h-3 w-3 rounded-full bg-[#FF0032]"></p>
+        </a>
+      </div>
     </div>
   );
 };
