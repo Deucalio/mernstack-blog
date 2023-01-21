@@ -28,10 +28,31 @@ const storage = new CloudinaryStorage({
 });
 
 const upload = multer({ storage: storage });
-app.post("/article/add", upload.single("picture"), async (req, res) => {
+app.post("/article/add/img", upload.single("picture"), async (req, res) => {
   res.json({
     msg: "SET",
     CoverImg: req.file.path,
+  });
+});
+
+app.post("/article/add", async (req, res) => {
+  res.json({
+    msg: "SET",
+    title: req.body.title,
+    description: req.body.description,
+  });
+});
+
+app.post("/article/AddToDb", async (req, res) => {
+  const article = new Article({
+    coverImgUrl: req.body.image,
+    title: req.body.title,
+    description: req.body.description,
+  });
+  await article.save();
+
+  res.json({
+    msg: "Done",
   });
 });
 
