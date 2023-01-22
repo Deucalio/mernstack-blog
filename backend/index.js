@@ -13,6 +13,19 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json()); //useful for working with req.body obj
 
+mongoose.set("strictQuery", true);
+
+try {
+  // Connect to the MongoDB cluster
+  mongoose.connect(
+    process.env.MONGOSTRING,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => console.log("Mongoose is connected")
+  );
+} catch (e) {
+  console.log("could not connect");
+}
+
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -28,6 +41,7 @@ const storage = new CloudinaryStorage({
 });
 
 const upload = multer({ storage: storage });
+
 app.post("/article/add/img", upload.single("picture"), async (req, res) => {
   res.json({
     msg: "SET",
@@ -43,6 +57,7 @@ app.post("/article/add", async (req, res) => {
   });
 });
 
+// Add an article to db (given imageurl, title and description)
 app.post("/article/AddToDb", async (req, res) => {
   const article = new Article({
     coverImgUrl: req.body.image,
@@ -56,50 +71,35 @@ app.post("/article/AddToDb", async (req, res) => {
   });
 });
 
-mongoose.set("strictQuery", true);
+// Edit (change image)
 
-try {
-  // Connect to the MongoDB cluster
-  mongoose.connect(
-    process.env.MONGOSTRING,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => console.log("Mongoose is connected")
-  );
-} catch (e) {
-  console.log("could not connect");
-}
+app.post(
+  "/article/edit/img/:id",
+  upload.single("picture"),
+  async (req, res) => {
+    res.json({
+      msg: "SET",
+      CoverImg: req.params.id,
+    });
+  }
+);
 
-let DATA = [
-  {
-    id: 1,
-    title: "iPhone 9",
-    description: "An apple mobile which is nothing like apple",
-    price: 549,
-  },
-  {
-    id: 2,
-    title: "iPhone X",
-    description:
-      "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
-    price: 899,
-  },
-  {
-    id: 3,
-    title: "Samsung Universe 9",
-    description:
-      "Samsung's new variant which goes beyond Galaxy to the Universe",
-    price: 1249,
-  },
-];
+// Delete an article (given an id)
 
+app.delete("/article/:id", async (req, res) => {
+  const article = await Article.findByIdAndDelete(req.params.id);
+  res.json({ msg: "DELETED" });
+});
+
+// fetch all the articles
 app.get("/", async (req, res) => {
-  const user = await Article.find({});
-  console.log(user);
+  const articles = await Article.find({});
+  res.json({ data: articles });
 });
 
-app.get("/api", (req, res) => {
-  res.json(DATA);
-});
+// app.get("/api", (req, res) => {
+//   res.json(DATA);
+// });
 
 app.delete("/api/:id", (req, res) => {
   DATA = DATA.filter((item) => item.id !== parseInt(req.params.id));
