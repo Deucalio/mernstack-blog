@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import AddForm from "./components/AddForm";
+import DeletePopup from "./components/DeletePopup";
 import EditForm from "./components/EditForm";
 
-const FeaturedArticleSection = ({ title, coverImg }) => {
+const FeaturedArticleSection = ({ title, coverImg, showForm }) => {
   return (
     <section
       style={{
@@ -13,7 +14,13 @@ const FeaturedArticleSection = ({ title, coverImg }) => {
       className="home mx-auto h-[80vh] bg-cover bg-center shadow-2xl"
     >
       <nav className="flex flex-wrap justify-between p-4 text-[#ECECEC]">
-        <p className="cursor-pointer text-3xl uppercase">Blog</p>
+        <p className="cursor-pointer text-3xl uppercase relative">Blog</p>
+        <button
+          onClick={() => showForm("add")}
+          className="absolute left-4 top-16 px-4 py-2 bg-green-600 hover:bg-green-600 text-lg transition-all rounded-md text-[#ECECEC]"
+        >
+          Add an Article
+        </button>
         <div className="flex flex-wrap items-center gap-1 text-xl">
           <div className="flex cursor-pointer items-center hover:opacity-90">
             {/* default is dark mode */}
@@ -66,14 +73,7 @@ const FeaturedArticleSection = ({ title, coverImg }) => {
   );
 };
 
-const ArticleBox = ({
-  coverImg,
-  title,
-  index,
-  showForm,
-  deleteArticle,
-  id,
-}) => {
+const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
   if (index % 5 == 0) {
     return (
       <figure
@@ -89,8 +89,8 @@ const ArticleBox = ({
           <p onClick={window.scrollTo(0, 0)}>Edit</p>
         </button>
         <button
-          onClick={() => deleteArticle(id)}
-          class="bg-red-600 hover:bg-red-700 transition-all z-50 absolute top-0 left-16 py-1 px-3 text-lg text-white rounded-md"
+          onClick={() => deleteButton(id)}
+          className="bg-red-600 hover:bg-red-700 transition-all z-50 absolute top-0 left-16 py-1 px-3 text-lg text-white rounded-md"
         >
           Delete
         </button>
@@ -116,8 +116,8 @@ const ArticleBox = ({
         <p onClick={window.scrollTo(0, 0)}>Edit</p>
       </button>
       <button
-        onClick={() => deleteArticle(id)}
-        class="bg-red-600 hover:bg-red-700 transition-all z-50 absolute top-0 left-16 py-1 px-3 text-lg text-white rounded-md"
+        onClick={() => deleteButton(id)}
+        className="bg-red-600 hover:bg-red-700 transition-all z-50 absolute top-0 left-16 py-1 px-3 text-lg text-white rounded-md"
       >
         Delete
       </button>
@@ -134,21 +134,47 @@ const ArticleBox = ({
 const App = () => {
   const [articles, setArticles] = useState([]);
 
-  const [displayForm, setDisplayForm] = useState(false);
+  const [displayEditForm, setDisplayEditForm] = useState(false);
+  const [displayAddForm, setDisplayAddForm] = useState(false);
 
-  const showForm = () => {
+  const [displayDeletePopup, setDisplayDeletePopup] = useState(false);
+  const [deleteArticleId, setDeleteArticleId] = useState("");
+
+  const showForm = (text) => {
+    if (text === "add") {
+      setDisplayAddForm(true);
+      return 0;
+    }
+
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    setDisplayForm(true);
+    setDisplayEditForm(true);
   };
 
   const closeForm = () => {
-    setDisplayForm(false);
+    setDisplayAddForm(false);
+    setDisplayEditForm(false);
+  };
+
+  // saves id for the button to be deleted
+  const deleteButton = (id) => {
+    setDeleteArticleId(id);
+    setDisplayDeletePopup(true);
+  };
+
+  // this returns true(if article is to be deleted) or false
+  const displayDeleteArticlePopUp = (bool) => {
+    if (bool === true) {
+      // alert("DELETED");
+      deleteArticle(deleteArticleId);
+      setDeleteArticleId("");
+      setDisplayDeletePopup(false);
+    } else {
+      setDeleteArticleId("");
+      setDisplayDeletePopup(false);
+    }
   };
 
   const deleteArticle = async (id) => {
-    // console.log(articles.map((a) => a._id === id));
-    // console.log("id", id)
-
     const response = await fetch(
       `http://localhost:3000/article/${String(id)}`,
       {
@@ -157,9 +183,6 @@ const App = () => {
     );
     const res = await response.json();
     window.location.reload(true);
-
-    // setData(obj);
-    console.log("res", res);
   };
 
   useEffect(() => {
@@ -205,11 +228,12 @@ const App = () => {
   };
 
   if (articles.length == 0) {
+    // Display loader if the data fetched isn't laoded (implies there are no articles)
     return (
       <>
-        <div class="absolute inset-0 z-30 bg-black/90"></div>
-        <div class="fixed top-0 right-0 h-screen w-screen z-50 flex justify-center items-center inset-0">
-          <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-100"></div>
+        <div className="absolute inset-0 z-30 bg-black/90"></div>
+        <div className="fixed top-0 right-0 h-screen w-screen z-50 flex justify-center items-center inset-0">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-100"></div>
         </div>
       </>
     );
@@ -218,17 +242,17 @@ const App = () => {
   return (
     <div id="top" className={`App`}>
       <FeaturedArticleSection
-        title={articles[3].title}
-        coverImg={articles[3].coverImgUrl}
+        showForm={showForm}
+        title={articles[4].title}
+        coverImg={articles[4].coverImgUrl}
       />
 
-      <section class="relative container outline mx-auto flex h-auto grid-cols-1 flex-col items-center justify-center gap-3 border-fuchsia-600 px-2 py-2 sm:grid sm:grid-cols-2 sm:items-center sm:gap-2 sm:px-6 lg:h-auto lg:grid-cols-12 lg:grid-rows-2 lg:gap-3 lg:p-3 lg:py-6">
+      <section className="relative container mx-auto flex h-auto grid-cols-1 flex-col items-center justify-center gap-3 border-fuchsia-600 px-2 py-2 sm:grid sm:grid-cols-2 sm:items-center sm:gap-2 sm:px-6 lg:h-auto lg:grid-cols-12 lg:grid-rows-2 lg:gap-3 lg:p-3 lg:py-6">
         {articles.map((article, i) => {
           return (
             <ArticleBox
               showForm={showForm}
-              setDisplayForm={setDisplayForm}
-              deleteArticle={deleteArticle}
+              deleteButton={deleteButton}
               id={article._id}
               title={article.title}
               description={article.description}
@@ -238,10 +262,15 @@ const App = () => {
             />
           );
         })}
-        {/* <form class="absolute inset-0 h-[60vh] w-[80vw] z-[60] border-4 border-green-300"></form> */}
+        {/* <form className="absolute inset-0 h-[60vh] w-[80vw] z-[60] border-4 border-green-300"></form> */}
       </section>
 
-      {displayForm && <AddForm closeForm={closeForm} />}
+      {displayEditForm && <EditForm closeForm={closeForm} />}
+      {displayAddForm && <AddForm closeForm={closeForm} />}
+
+      {displayDeletePopup && (
+        <DeletePopup displayDeleteArticlePopUp={displayDeleteArticlePopUp} />
+      )}
     </div>
   );
 };

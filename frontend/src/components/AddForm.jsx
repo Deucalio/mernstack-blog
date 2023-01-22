@@ -17,18 +17,14 @@ const Form = ({ closeForm }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImg = async (e) => {
-    // const inputElement = e.target.previousElementSibling;
-    // const inputFile = inputElement.files[0];
-
-    const res = await req.json();
-    // console.log("res",res.picture) returns a url of picture uploaded
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.title.length === 0 || formData.description.length <= 10) {
+    if (
+      formData.title.length === 0 ||
+      formData.description.length <= 10 ||
+      file === null
+    ) {
       return alert("Please use form appropriately ");
     }
     const req1 = fetch("http://localhost:3000/article/add", {

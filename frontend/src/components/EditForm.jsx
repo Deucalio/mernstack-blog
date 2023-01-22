@@ -117,6 +117,9 @@ const Form = ({ closeForm }) => {
         <ul className=" border-yellow-400 my-7 flex flex-col gap-6">
           <li className="flex flex-col gap-2">
             <label className="text-lg">Cover Image:</label>
+            <p className="text-lg underline">
+              Default image is selected if you don't choose a new image
+            </p>
             <input
               onChange={(e) => setFile(e.target.files[0])}
               name="CoverImg"
@@ -153,7 +156,7 @@ const Form = ({ closeForm }) => {
               type="submit"
               className="bg-blue-700 hover:bg-blue-900 transition-all duration-500  py-1 px-2 text-lg tracking-tight rounded-md"
             >
-              Submit
+              Edit
             </button>
             <button
               onClick={closeForm}
