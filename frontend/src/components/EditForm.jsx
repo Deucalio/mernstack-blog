@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 // FORM component can be used for adding or editing an Article
 
-const Form = () => {
+const Form = ({ closeForm }) => {
   const inputRef = useRef(null);
   const [formData, setFormData] = useState({ title: "", description: "" });
   const [file, setFile] = useState(null);
@@ -48,8 +48,6 @@ const Form = () => {
       redirect: "follow",
     };
 
-    
-
     const req2 = fetch(
       "http://localhost:3000/article/add/img",
       requestOptions
@@ -83,14 +81,35 @@ const Form = () => {
     // await handleImg();
   };
 
+  const formElement = useRef(null);
+  useEffect(() => {
+    let anim;
+    document.body.classList.add("overflow-y-hidden");
+    anim = setTimeout(() => {
+      formElement.current.classList.add("mt-4");
+      formElement.current.classList.remove("opacity-0");
+    }, 400);
+
+    return () => {
+      document.body.classList.remove("overflow-y-hidden");
+      clearTimeout(anim);
+    };
+  });
+
   return (
     <>
-      <form className="text-[#ECECEC] rounded-sm p-6 inset-0 h-[80vh] w-[90vw] lg:w-[70vw] absolute mx-auto translate-y-1/2 -top-1/4 z-50 bg-[#0d1217] overflow-y-scroll">
+      <form
+        ref={formElement}
+        className="text-[#ECECEC] transition-all duration-700 opacity-0 rounded-sm p-6 inset-0 h-[80vh] w-[90vw] lg:w-[70vw] absolute mx-auto translate-y-1/2 -top-1/4 z-50 bg-[#0d1217] overflow-y-scroll"
+      >
         <fieldset className="grid grid-cols-2 text-[#ECECEC]/80">
           <p className="text-xl tracking-tight  border-b-2 border-[#ECECEC]/40 w-fit">
-            Add an Article{" "}
+            Edit an Article{" "}
           </p>
-          <p className="ml-auto pr-3 text-2xl lg:text-4xl cursor-pointer">
+          <p
+            onClick={closeForm}
+            className="ml-auto pr-3 text-2xl lg:text-4xl cursor-pointer"
+          >
             &times;
           </p>
         </fieldset>
@@ -137,6 +156,7 @@ const Form = () => {
               Submit
             </button>
             <button
+              onClick={closeForm}
               type="button"
               className="bg-red-600 hover:bg-red-800 transition-all  duration-500 py-1 px-2 text-lg tracking-tight rounded-md"
             >

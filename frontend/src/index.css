@@ -9,12 +9,6 @@ body{
     background-color: #0F0E0E; 
 }
 
-section.home{
-   background-image: 
-            linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-            url("https://images.pushsquare.com/a3306e0dbc2ff/the-last-of-us-hbo-1.large.jpg");
-}
-
 figure > div > p {
   /* limits number of lines to 2 */
   display: -webkit-box;
