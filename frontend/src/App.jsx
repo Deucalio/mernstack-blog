@@ -17,7 +17,7 @@ const FeaturedArticleSection = ({ title, coverImg, showForm }) => {
         <p className="cursor-pointer text-3xl uppercase relative">Blog</p>
         <button
           onClick={() => showForm("add")}
-          className="absolute left-4 top-16 px-4 py-2 bg-green-600 hover:bg-green-600 text-lg transition-all rounded-md text-[#ECECEC]"
+          className="absolute left-4 top-16 px-4 py-2 bg-green-600 hover:bg-green-800 text-lg transition-all ease-linear rounded-md text-[#ECECEC]"
         >
           Add an Article
         </button>
@@ -73,7 +73,15 @@ const FeaturedArticleSection = ({ title, coverImg, showForm }) => {
   );
 };
 
-const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
+const ArticleBox = ({
+  coverImg,
+  title,
+  index,
+  showForm,
+  deleteButton,
+  id,
+  showEditForm,
+}) => {
   if (index % 5 == 0) {
     return (
       <figure
@@ -83,7 +91,7 @@ const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
         className={`relative z-10 h-72 w-full bg-cover bg-center shadow-2xl sm:col-span-2 sm:w-full lg:col-span-6 lg:row-span-2 lg:h-[26.9rem]`}
       >
         <button
-          onClick={showForm}
+          onClick={() => showEditForm(id)}
           className="bg-purple-600 hover:bg-purple-700 transition-all z-50 absolute top-0 py-1 px-3 text-lg text-white rounded-md"
         >
           <p onClick={window.scrollTo(0, 0)}>Edit</p>
@@ -97,7 +105,7 @@ const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
         <div className="absolute inset-0 z-20 bg-black/20 transition-all"></div>
 
         <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 p-4 sm:justify-center lg:left-2">
-          <p className="text-xl text-[#E5E5CB]">{title}</p>
+          <p className="text-lg text-[#E5E5CB]">{title}</p>
         </div>
       </figure>
     );
@@ -110,7 +118,7 @@ const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
       className={`relative z-10 h-72 sm:h-52 w-full border-sky-900 bg-cover bg-center shadow-2xl lg:col-span-3`}
     >
       <button
-        onClick={showForm}
+        onClick={() => showEditForm(id)}
         className="bg-purple-600 hover:bg-purple-700 transition-all z-50 absolute top-0 py-1 px-3 text-lg text-white rounded-md"
       >
         <p onClick={window.scrollTo(0, 0)}>Edit</p>
@@ -125,7 +133,7 @@ const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
       <div className="absolute inset-0 z-20 bg-black/20 transition-all"></div>
 
       <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 p-4 sm:justify-center lg:left-2">
-        <p className="text-xl text-[#E5E5CB]">{title}</p>
+        <p className="text-lg text-[#E5E5CB]">{title}</p>
       </div>
     </figure>
   );
@@ -133,12 +141,14 @@ const ArticleBox = ({ coverImg, title, index, showForm, deleteButton, id }) => {
 
 const App = () => {
   const [articles, setArticles] = useState([]);
+  const [editArticle, setEditArticle] = useState({})
 
   const [displayEditForm, setDisplayEditForm] = useState(false);
   const [displayAddForm, setDisplayAddForm] = useState(false);
 
   const [displayDeletePopup, setDisplayDeletePopup] = useState(false);
   const [deleteArticleId, setDeleteArticleId] = useState("");
+
 
   const showForm = (text) => {
     if (text === "add") {
@@ -147,6 +157,11 @@ const App = () => {
     }
 
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
+
+  const showEditForm = (id) => {
+    const article = articles.filter((a) => a._id === id)[0];
+    setEditArticle(article)
     setDisplayEditForm(true);
   };
 
@@ -252,6 +267,7 @@ const App = () => {
           return (
             <ArticleBox
               showForm={showForm}
+              showEditForm={showEditForm}
               deleteButton={deleteButton}
               id={article._id}
               title={article.title}
@@ -265,7 +281,7 @@ const App = () => {
         {/* <form className="absolute inset-0 h-[60vh] w-[80vw] z-[60] border-4 border-green-300"></form> */}
       </section>
 
-      {displayEditForm && <EditForm closeForm={closeForm} />}
+      {displayEditForm && <EditForm editArticle={editArticle} closeForm={closeForm} />}
       {displayAddForm && <AddForm closeForm={closeForm} />}
 
       {displayDeletePopup && (

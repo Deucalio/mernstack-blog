@@ -2,14 +2,17 @@ import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 // FORM component can be used for adding or editing an Article
 
-const Form = ({ closeForm }) => {
-  const inputRef = useRef(null);
-  const [formData, setFormData] = useState({ title: "", description: "" });
-  const [file, setFile] = useState(null);
+const Form = ({ closeForm, editArticle }) => {
+  const { _id, title, description, coverImgUrl } = editArticle;
 
-  //   useEffect(() => {
-  //     console.log(inputRef.current.required);
-  //   });
+  const editBtn = useRef(null);
+
+  const inputRef = useRef(null);
+  const [formData, setFormData] = useState({
+    title: title,
+    description: description,
+  });
+  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,28 +20,7 @@ const Form = ({ closeForm }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImg = async (e) => {
-    // const inputElement = e.target.previousElementSibling;
-    // const inputFile = inputElement.files[0];
-
-    const res = await req.json();
-    // console.log("res",res.picture) returns a url of picture uploaded
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (formData.title.length === 0 || formData.description.length <= 10) {
-      return alert("Please use form appropriately ");
-    }
-    const req1 = fetch("http://localhost:3000/article/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((res) => res.json());
-
+  const uploadImg = async () => {
     let formdata = new FormData();
     formdata.append("picture", file);
 
@@ -47,38 +29,35 @@ const Form = ({ closeForm }) => {
       body: formdata,
       redirect: "follow",
     };
+    const req = fetch("http://localhost:3000/article/add/img", requestOptions);
+    const res = req.json();
+    console.log("done", res);
+  };
 
-    const req2 = fetch(
-      "http://localhost:3000/article/add/img",
-      requestOptions
-    ).then((res) => res.json());
-    // const res = await req2.json();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    editBtn.disabled = true;
 
-    const allRes = Promise.all([req2, req1]);
+    if (formData.title.length === 0 || formData.description.length <= 10) {
+      return alert("Please use form appropriately ");
+    }
 
-    const data = allRes.then((res) => {
-      return res;
-    });
+    // if user modified title and description but didn't change image
+    if (file === null) {
+      const req = await fetch(
+        `http://localhost:3000/article/edit/titleDescription/${_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    const response = await data;
-
-    const req3 = await fetch("http://localhost:3000/article/AddToDb", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        image: response[0].CoverImg,
-        title: response[1].title,
-        description: response[1].description,
-      }),
-    });
-
-    const res3 = await req3.json();
-
-    console.log("res3", res3);
-
-    // await handleImg();
+      const res = await req.json();
+      window.location.reload(true);
+    }
   };
 
   const formElement = useRef(null);
@@ -132,6 +111,7 @@ const Form = ({ closeForm }) => {
           <li className="flex flex-col gap-2">
             <label className="text-lg">Title:</label>
             <input
+              value={formData.title}
               onChange={handleChange}
               name="title"
               className="bg-transparent py-1 px-2 text-lg rounded-sm"
@@ -143,6 +123,7 @@ const Form = ({ closeForm }) => {
           <li className="flex flex-col gap-2">
             <label className="text-lg">Description:</label>
             <textarea
+              value={formData.description}
               onChange={handleChange}
               name="description"
               className="bg-transparent resize-none h-44 lg:h-48 whitespace-pre-line"
@@ -152,6 +133,7 @@ const Form = ({ closeForm }) => {
 
           <li className="flex flex-wrap gap-3 py-2 text-[#E5E5CB]">
             <button
+              ref={editBtn}
               onClick={handleSubmit}
               type="submit"
               className="bg-blue-700 hover:bg-blue-900 transition-all duration-500  py-1 px-2 text-lg tracking-tight rounded-md"
