@@ -47,7 +47,7 @@ const Form = ({ closeForm, editArticle }) => {
       const req = await fetch(
         `http://localhost:3000/article/edit/titleDescription/${_id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
