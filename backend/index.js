@@ -71,18 +71,16 @@ app.post("/article/AddToDb", async (req, res) => {
   });
 });
 
-// Edit (change image)
+// Edit (given no image is provided)
 
-app.post(
-  "/article/edit/img/:id",
-  upload.single("picture"),
-  async (req, res) => {
-    res.json({
-      msg: "SET",
-      CoverImg: req.params.id,
-    });
-  }
-);
+app.put("/article/edit/titleDescription/:id", async (req, res) => {
+  // find the default image in monogodb using id
+  const article = await Article.findByIdAndUpdate(req.params.id, {
+    title: req.body.title,
+    description: req.body.description,
+  });
+  res.json({ msg: "done" });
+});
 
 // Delete an article (given an id)
 
