@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AddForm from "./components/AddForm";
 import DeletePopup from "./components/DeletePopup";
 import EditForm from "./components/EditForm";
 
-const FeaturedArticleSection = ({ title, coverImg, showForm }) => {
+const FeaturedArticleSection = ({ title, coverImg, showForm, id }) => {
+  const articleRoute = `/articles/${id}`;
   return (
     <section
       style={{
@@ -63,10 +65,12 @@ const FeaturedArticleSection = ({ title, coverImg, showForm }) => {
       </nav>
       <main className="flex h-5/6 flex-col justify-end gap-3 border-sky-500 xl:mr-20 xl:gap-6">
         <header className="mx-auto h-auto w-fit cursor-pointer border-green-500 text-2xl text-white/95 hover:underline sm:h-36">
-          <div className="pointer-events-none flex flex-col gap-3 rounded-sm border-l-4 border-l-rose-900 bg-black/30 p-4 h-4/5 justify-center">
-            <p className="text-lg text-[E5E5CB]">Featured Article:</p>
-            <p className="text-lg text-[#E5E5CB]">{title}</p>
-          </div>
+          <Link to={articleRoute}>
+            <div className="pointer-events-none flex flex-col gap-3 rounded-sm border-l-4 border-l-rose-900 bg-black/30 p-4 h-4/5 justify-center">
+              <p className="text-lg text-[E5E5CB]">Featured Article:</p>
+              <p className="text-lg text-[#E5E5CB]">{title}</p>
+            </div>
+          </Link>
         </header>
       </main>
     </section>
@@ -82,6 +86,7 @@ const ArticleBox = ({
   id,
   showEditForm,
 }) => {
+  const articleRoute = `/articles/${id}`;
   if (index % 5 == 0) {
     return (
       <figure
@@ -104,9 +109,11 @@ const ArticleBox = ({
         </button>
         <div className="absolute inset-0 z-20 bg-black/20 transition-all"></div>
 
-        <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 p-4 sm:justify-center lg:left-2">
-          <p className="text-lg text-[#E5E5CB]">{title}</p>
-        </div>
+        <Link to={articleRoute}>
+          <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 hover:underline cursor-pointer p-4 sm:justify-center lg:left-2">
+            <p id="titleP" className="text-lg text-[#E5E5CB]">{title}</p>
+          </div>
+        </Link>
       </figure>
     );
   }
@@ -132,23 +139,24 @@ const ArticleBox = ({
 
       <div className="absolute inset-0 z-20 bg-black/20 transition-all"></div>
 
-      <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 p-4 sm:justify-center lg:left-2">
-        <p className="text-lg text-[#E5E5CB]">{title}</p>
-      </div>
+      <Link to={articleRoute}>
+        <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 hover:underline cursor-pointer p-4 sm:justify-center lg:left-2">
+          <p id="titleP" className="text-lg text-[#E5E5CB]">{title}</p>
+        </div>
+      </Link>
     </figure>
   );
 };
 
 const App = () => {
   const [articles, setArticles] = useState([]);
-  const [editArticle, setEditArticle] = useState({})
+  const [editArticle, setEditArticle] = useState({});
 
   const [displayEditForm, setDisplayEditForm] = useState(false);
   const [displayAddForm, setDisplayAddForm] = useState(false);
 
   const [displayDeletePopup, setDisplayDeletePopup] = useState(false);
   const [deleteArticleId, setDeleteArticleId] = useState("");
-
 
   const showForm = (text) => {
     if (text === "add") {
@@ -161,7 +169,7 @@ const App = () => {
 
   const showEditForm = (id) => {
     const article = articles.filter((a) => a._id === id)[0];
-    setEditArticle(article)
+    setEditArticle(article);
     setDisplayEditForm(true);
   };
 
@@ -258,6 +266,7 @@ const App = () => {
     <div id="top" className={`App`}>
       <FeaturedArticleSection
         showForm={showForm}
+        id={articles[4]._id}
         title={articles[4].title}
         coverImg={articles[4].coverImgUrl}
       />
@@ -281,7 +290,9 @@ const App = () => {
         {/* <form className="absolute inset-0 h-[60vh] w-[80vw] z-[60] border-4 border-green-300"></form> */}
       </section>
 
-      {displayEditForm && <EditForm editArticle={editArticle} closeForm={closeForm} />}
+      {displayEditForm && (
+        <EditForm editArticle={editArticle} closeForm={closeForm} />
+      )}
       {displayAddForm && <AddForm closeForm={closeForm} />}
 
       {displayDeletePopup && (
