@@ -82,6 +82,18 @@ app.put("/article/edit/titleDescription/:id", async (req, res) => {
   res.json({ msg: "done" });
 });
 
+// Edit (fiven image is provided)
+
+app.put("/article/edit/titleDescriptionImg/:id", async (req, res) => {
+  // find the default image in monogodb using id
+  const article = await Article.findByIdAndUpdate(req.params.id, {
+    title: req.body.title,
+    description: req.body.description,
+    coverImgUrl: req.body.newImageUrl,
+  });
+  res.json({ msg: "done" });
+});
+
 // Delete an article (given an id)
 
 app.delete("/article/:id", async (req, res) => {
