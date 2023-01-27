@@ -107,6 +107,18 @@ app.get("/", async (req, res) => {
   res.json({ data: articles });
 });
 
+// fetch an article (given an id)
+
+app.get("/article/:id", async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id);
+    console.log(article);
+    res.json({ article: article });
+  } catch (err) {
+    res.json({article: null})
+  }
+});
+
 // app.get("/api", (req, res) => {
 //   res.json(DATA);
 // });
