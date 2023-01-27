@@ -29,14 +29,18 @@ const Form = ({ closeForm, editArticle }) => {
       body: formdata,
       redirect: "follow",
     };
-    const req = fetch("http://localhost:3000/article/add/img", requestOptions);
-    const res = req.json();
-    console.log("done", res);
+    const req = await fetch(
+      "http://localhost:3000/article/add/img",
+      requestOptions
+    );
+    const res = await req.json();
+    // console.log("done", res);
+    return res;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    editBtn.disabled = true;
+    editBtn.current.disabled = true;
 
     if (formData.title.length === 0 || formData.description.length <= 10) {
       return alert("Please use form appropriately ");
@@ -55,6 +59,26 @@ const Form = ({ closeForm, editArticle }) => {
         }
       );
 
+      const res = await req.json();
+      window.location.reload(true);
+    } else {
+      // if user changes image
+      const imgUploadReq = await uploadImg();
+      const newImageUrl = imgUploadReq.CoverImg;
+
+      const req = await fetch(
+        `http://localhost:3000/article/edit/titleDescriptionImg/${_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            newImageUrl: newImageUrl,
+          }),
+        }
+      );
       const res = await req.json();
       window.location.reload(true);
     }
