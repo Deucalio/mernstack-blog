@@ -5,13 +5,7 @@ const articleSchema = new mongoose.Schema({
   title: { type: String },
   description: { type: String },
   createdAt: { type: Date, default: () => Date.now() },
-  // comments: {},
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 module.exports = mongoose.model("Article", articleSchema);
-
-// module.exports = mongoose.model("Magazine", bookSchema);
-// const bookSchema = new mongoose.Schema({
-//   title: String,
-//   description: String
-// })

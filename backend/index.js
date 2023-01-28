@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Article = require("./models/article");
+const Comment = require("./models/comments");
 
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -71,6 +72,20 @@ app.post("/article/AddToDb", async (req, res) => {
   });
 });
 
+// Post comment
+app.post("/article/comment/:id", async (req, res) => {
+  const article = await Article.findById(req.params.id);
+  const comment = new Comment({
+    username: req.body.username,
+    comment: req.body.comment,
+  });
+  article.comments.push(comment);
+  article.save();
+  comment.save();
+
+  res.json({ msg: "Done" });
+});
+
 // Edit (given no image is provided)
 
 app.put("/article/edit/titleDescription/:id", async (req, res) => {
@@ -111,17 +126,12 @@ app.get("/", async (req, res) => {
 
 app.get("/article/:id", async (req, res) => {
   try {
-    const article = await Article.findById(req.params.id);
-    console.log(article);
+    const article = await Article.findById(req.params.id).populate("comments");
     res.json({ article: article });
   } catch (err) {
-    res.json({article: null})
+    res.json({ article: null });
   }
 });
-
-// app.get("/api", (req, res) => {
-//   res.json(DATA);
-// });
 
 app.delete("/api/:id", (req, res) => {
   DATA = DATA.filter((item) => item.id !== parseInt(req.params.id));
