@@ -134,11 +134,7 @@ app.get("/article/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/:id", (req, res) => {
-  DATA = DATA.filter((item) => item.id !== parseInt(req.params.id));
-  // res.send(req.params.id)
-  res.json(DATA);
-});
+
 
 
 app.listen(port, () => {
