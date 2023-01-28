@@ -111,7 +111,9 @@ const ArticleBox = ({
 
         <Link to={articleRoute}>
           <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 hover:underline cursor-pointer p-4 sm:justify-center lg:left-2">
-            <p id="titleP" className="text-lg text-[#E5E5CB]">{title}</p>
+            <p id="titleP" className="text-lg text-[#E5E5CB]">
+              {title}
+            </p>
           </div>
         </Link>
       </figure>
@@ -141,7 +143,9 @@ const ArticleBox = ({
 
       <Link to={articleRoute}>
         <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 hover:underline cursor-pointer p-4 sm:justify-center lg:left-2">
-          <p id="titleP" className="text-lg text-[#E5E5CB]">{title}</p>
+          <p id="titleP" className="text-lg text-[#E5E5CB]">
+            {title}
+          </p>
         </div>
       </Link>
     </figure>
@@ -157,6 +161,8 @@ const App = () => {
 
   const [displayDeletePopup, setDisplayDeletePopup] = useState(false);
   const [deleteArticleId, setDeleteArticleId] = useState("");
+
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const showForm = (text) => {
     if (text === "add") {
@@ -198,12 +204,9 @@ const App = () => {
   };
 
   const deleteArticle = async (id) => {
-    const response = await fetch(
-      `http://localhost:3000/article/${String(id)}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`${apiUrl}/article/${String(id)}`, {
+      method: "DELETE",
+    });
     const res = await response.json();
     window.location.reload(true);
   };
@@ -212,7 +215,7 @@ const App = () => {
     let ignore = false;
     async function getData() {
       try {
-        const response = await fetch("http://localhost:3000");
+        const response = await fetch(`${apiUrl}`);
         const obj = await response.json();
         setArticles(obj.data);
       } catch (err) {
@@ -228,26 +231,11 @@ const App = () => {
   }, []);
 
   const deleteBtn = async (id) => {
-    const response = await fetch(`http://localhost:3000/api/${String(id)}`, {
+    const response = await fetch(`${apiUrl}/api/${String(id)}`, {
       method: "DELETE",
     });
     const obj = await response.json();
     setData(obj);
-  };
-
-  const sendPostReq = async () => {
-    const req = await fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: "Ali@gmail.com",
-        password: "Hammad",
-      }),
-    });
-    const res = await req.json();
-    console.log("res", res);
   };
 
   if (articles.length == 0) {

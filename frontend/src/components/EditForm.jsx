@@ -6,6 +6,7 @@ const Form = ({ closeForm, editArticle }) => {
   const { _id, title, description, coverImgUrl } = editArticle;
 
   const editBtn = useRef(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const inputRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -29,10 +30,7 @@ const Form = ({ closeForm, editArticle }) => {
       body: formdata,
       redirect: "follow",
     };
-    const req = await fetch(
-      "http://localhost:3000/article/add/img",
-      requestOptions
-    );
+    const req = await fetch(`${apiUrl}/article/add/img`, requestOptions);
     const res = await req.json();
     // console.log("done", res);
     return res;
@@ -49,7 +47,7 @@ const Form = ({ closeForm, editArticle }) => {
     // if user modified title and description but didn't change image
     if (file === null) {
       const req = await fetch(
-        `http://localhost:3000/article/edit/titleDescription/${_id}`,
+        `${apiUrl}/article/edit/titleDescription/${_id}`,
         {
           method: "PUT",
           headers: {
@@ -67,7 +65,7 @@ const Form = ({ closeForm, editArticle }) => {
       const newImageUrl = imgUploadReq.CoverImg;
 
       const req = await fetch(
-        `http://localhost:3000/article/edit/titleDescriptionImg/${_id}`,
+        `${apiUrl}/article/edit/titleDescriptionImg/${_id}`,
         {
           method: "PUT",
           headers: {

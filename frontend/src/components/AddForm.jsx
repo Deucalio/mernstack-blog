@@ -10,6 +10,7 @@ const Form = ({ closeForm }) => {
   //   useEffect(() => {
   //     console.log(inputRef.current.required);
   //   });
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +28,7 @@ const Form = ({ closeForm }) => {
     ) {
       return alert("Please use form appropriately ");
     }
-    const req1 = fetch("http://localhost:3000/article/add", {
+    const req1 = fetch(`${apiUrl}/article/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +46,7 @@ const Form = ({ closeForm }) => {
     };
 
     const req2 = fetch(
-      "http://localhost:3000/article/add/img",
+      `${apiUrl}/article/add/img`,
       requestOptions
     ).then((res) => res.json());
     // const res = await req2.json();
@@ -58,7 +59,7 @@ const Form = ({ closeForm }) => {
 
     const response = await data;
 
-    const req3 = await fetch("http://localhost:3000/article/AddToDb", {
+    const req3 = await fetch(`${apiUrl}/article/AddToDb`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

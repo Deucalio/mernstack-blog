@@ -35,14 +35,13 @@ const Article = () => {
   const [addedComments, setAddedComments] = useState([]);
   const usernameInput = useRef(null);
   const commentInput = useRef(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     let ignore = false;
     async function getData() {
       try {
-        const response = await fetch(
-          `http://localhost:3000/article/${String(id)}`
-        );
+        const response = await fetch(`${apiUrl}/article/${String(id)}`);
         const obj = await response.json();
         setArticle(obj.article);
       } catch (err) {
@@ -96,7 +95,7 @@ const Article = () => {
     };
 
     const req = await fetch(
-      `http://localhost:3000/article/comment/${String(id)}`,
+      `${apiUrl}/article/comment/${String(id)}`,
       {
         method: "POST",
         headers: {
@@ -113,8 +112,8 @@ const Article = () => {
     // });
     setAddedComments([...addedComments, newComment]);
     // console.log("res", res);
-    usernameInput.current.value = ""
-    commentInput.current.value = ""
+    usernameInput.current.value = "";
+    commentInput.current.value = "";
   };
 
   return (
