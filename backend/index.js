@@ -111,6 +111,8 @@ app.put("/article/edit/titleDescriptionImg/:id", async (req, res) => {
 
 // Delete an article (given an id)
 
+
+
 app.delete("/article/:id", async (req, res) => {
   const article = await Article.findByIdAndDelete(req.params.id);
   res.json({ msg: "DELETED" });
