@@ -180,14 +180,14 @@ const Article = () => {
             <fieldset className="mx-auto flex w-2/3 flex-col gap-2 sm:w-1/3">
               <input
                 ref={usernameInput}
-                className="mx-auto  border-0 rounded-sm w-52 p-1 text-base 2xl:text-lg  placeholder:text-base placeholder:text-[#ECECEC]/30 tracking-wide sm:w-auto lg:w-80 bg-[#1f2424] "
+                className="mx-auto  border-0 rounded-sm w-52 p-1 text-base 2xl:text-lg  placeholder:text-base placeholder:text-[#ECECEC]/30 tracking-wide sm:w-auto lg:w-80 bg-[#1f2424] text-[#ECECEC]"
                 maxLength="10"
                 type="text"
                 placeholder="Username: "
               />
               <input
                 ref={commentInput}
-                className="mx-auto  border-0 rounded-sm w-52 p-1 text-base 2xl:text-lg  placeholder:text-base placeholder:text-[#ECECEC]/30 tracking-wide sm:w-auto lg:w-80 bg-[#1f2424]"
+                className="mx-auto  border-0 rounded-sm w-52 p-1 text-base 2xl:text-lg  placeholder:text-base placeholder:text-[#ECECEC]/30 tracking-wide sm:w-auto lg:w-80 bg-[#1f2424] text-[#ECECEC]"
                 maxLength="80"
                 type="text"
                 placeholder="Comment: "

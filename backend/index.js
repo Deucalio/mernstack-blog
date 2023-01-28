@@ -118,6 +118,7 @@ app.delete("/article/:id", async (req, res) => {
 
 // fetch all the articles
 app.get("/", async (req, res) => {
+  // console.log("a",process.env.MONGOSTRING)
   const articles = await Article.find({});
   res.json({ data: articles });
 });
@@ -139,10 +140,6 @@ app.delete("/api/:id", (req, res) => {
   res.json(DATA);
 });
 
-app.post("/login", (req, res) => {
-  console.log(req.body);
-  res.json({ msg: "Set", data: req.body });
-});
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
