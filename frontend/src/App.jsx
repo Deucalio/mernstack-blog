@@ -17,50 +17,20 @@ const FeaturedArticleSection = ({ title, coverImg, showForm, id }) => {
     >
       <nav className="flex flex-wrap justify-between p-4 text-[#ECECEC]">
         <p className="cursor-pointer text-3xl uppercase relative">Blog</p>
-        <button
+        {/* <button
           onClick={() => showForm("add")}
           className="absolute left-4 top-16 px-4 py-2 bg-green-600 hover:bg-green-800 text-lg transition-all ease-linear rounded-md text-[#ECECEC]"
         >
           Add an Article
-        </button>
+        </button> */}
         <div className="flex flex-wrap items-center gap-1 text-xl">
           <div className="flex cursor-pointer items-center hover:opacity-90">
-            {/* default is dark mode */}
-            {/* <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          className="pointer-events-none h-6 w-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-          />
-        </svg> */}
-
-            {/* svg for sun (light mode) */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="pointer-events-none h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
-              />
-            </svg>
+       
           </div>
-
+{/* 
           <p className="ml-3 w-32 cursor-pointer rounded-sm border-2 border-[#ECECEC] p-1 text-center shadow-xl transition-all duration-1000 hover:bg-[#ECECEC]/25">
             Admin
-          </p>
+          </p> */}
         </div>
       </nav>
       <main className="flex h-5/6 flex-col justify-end gap-3 border-sky-500 xl:mr-20 xl:gap-6">
@@ -95,23 +65,12 @@ const ArticleBox = ({
         }}
         className={`relative z-10 h-72 w-full bg-cover bg-center shadow-2xl sm:col-span-2 sm:w-full lg:col-span-6 lg:row-span-2 lg:h-[26.9rem]`}
       >
-        <button
-          onClick={() => showEditForm(id)}
-          className="bg-purple-600 hover:bg-purple-700 transition-all z-50 absolute top-0 py-1 px-3 text-lg text-white rounded-md"
-        >
-          <p onClick={window.scrollTo(0, 0)}>Edit</p>
-        </button>
-        <button
-          onClick={() => deleteButton(id)}
-          className="bg-red-600 hover:bg-red-700 transition-all z-50 absolute top-0 left-16 py-1 px-3 text-lg text-white rounded-md"
-        >
-          Delete
-        </button>
+       
         <div className="absolute inset-0 z-20 bg-black/20 transition-all"></div>
 
         <Link to={articleRoute}>
-          <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 hover:underline cursor-pointer p-4 sm:justify-center lg:left-2">
-            <p id="titleP" className="text-lg text-[#E5E5CB]">
+          <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 cursor-pointer p-4 sm:justify-center lg:left-2">
+            <p id="titleP" className="text-lg text-[#ffffff] hover:underline">
               {title}
             </p>
           </div>
@@ -126,24 +85,13 @@ const ArticleBox = ({
       }}
       className={`relative z-10 h-72 sm:h-52 w-full border-sky-900 bg-cover bg-center shadow-2xl lg:col-span-3`}
     >
-      <button
-        onClick={() => showEditForm(id)}
-        className="bg-purple-600 hover:bg-purple-700 transition-all z-50 absolute top-0 py-1 px-3 text-lg text-white rounded-md"
-      >
-        <p onClick={window.scrollTo(0, 0)}>Edit</p>
-      </button>
-      <button
-        onClick={() => deleteButton(id)}
-        className="bg-red-600 hover:bg-red-700 transition-all z-50 absolute top-0 left-16 py-1 px-3 text-lg text-white rounded-md"
-      >
-        Delete
-      </button>
+     
 
       <div className="absolute inset-0 z-20 bg-black/20 transition-all"></div>
 
       <Link to={articleRoute}>
         <div className="absolute bottom-0 left-1/4 z-30 m-4 h-20 border-l-4 border-l-rose-900 bg-black/30 hover:underline cursor-pointer p-4 sm:justify-center lg:left-2">
-          <p id="titleP" className="text-lg text-[#E5E5CB]">
+          <p id="titleP" className="text-lg text-[#E5E5CB] hover:underline">
             {title}
           </p>
         </div>
