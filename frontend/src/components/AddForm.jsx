@@ -45,10 +45,9 @@ const Form = ({ closeForm }) => {
       redirect: "follow",
     };
 
-    const req2 = fetch(
-      `${apiUrl}/article/add/img`,
-      requestOptions
-    ).then((res) => res.json());
+    const req2 = fetch(`${apiUrl}/article/add/img`, requestOptions).then(
+      (res) => res.json()
+    );
     // const res = await req2.json();
 
     const allRes = Promise.all([req2, req1]);
@@ -81,8 +80,8 @@ const Form = ({ closeForm }) => {
 
   const formElement = useRef(null);
   useEffect(() => {
-    let anim;
     document.body.classList.add("overflow-y-hidden");
+    let anim;
     anim = setTimeout(() => {
       formElement.current.classList.add("mt-4");
       formElement.current.classList.remove("opacity-0");
