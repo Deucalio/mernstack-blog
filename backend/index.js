@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Article = require("./models/article");
 const Comment = require("./models/comments");
+const Admin = require("./models/admin");
 
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -111,8 +112,6 @@ app.put("/article/edit/titleDescriptionImg/:id", async (req, res) => {
 
 // Delete an article (given an id)
 
-
-
 app.delete("/article/:id", async (req, res) => {
   const article = await Article.findByIdAndDelete(req.params.id);
   res.json({ msg: "DELETED" });
@@ -120,7 +119,6 @@ app.delete("/article/:id", async (req, res) => {
 
 // fetch all the articles
 app.get("/", async (req, res) => {
-  // console.log("a",process.env.MONGOSTRING)
   const articles = await Article.find({});
   res.json({ data: articles });
 });
@@ -136,10 +134,18 @@ app.get("/article/:id", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  const admin = await Admin.findOne({
+    username: req.body.username,
+    password: req.body.password,
+  });
 
-
-
-
+  if (admin) {
+    return res.json({ status: "ok", user: process.env.token });
+  } else {
+    return res.json({ status: "error", user: false });
+  }
+});
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
