@@ -9,7 +9,7 @@ import NotFound from "./components/NotFound"
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/articles/:id" element={<Article />} />
