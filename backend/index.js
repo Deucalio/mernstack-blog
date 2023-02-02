@@ -27,9 +27,9 @@ try {
   console.log("could not connect");
 }
 
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config({ path: __dirname + "/.env" });
-}
+// if (process.env.NODE_ENV !== "production") {
+//   require("dotenv").config({ path: __dirname + "/.env" });
+// }
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
@@ -150,12 +150,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend", "build")));
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend", "dist")));
+//   app.get("/*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+//   });
+// }
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
