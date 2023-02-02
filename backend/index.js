@@ -22,7 +22,9 @@ try {
   mongoose.connect(process.env.MONGOSTRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    poolSize: 1,
+    maxPoolSize: 50,
+    wtimeoutMS: 2500,
+    useNewUrlParser: true,
   });
 } catch (e) {
   console.log("could not connect");
