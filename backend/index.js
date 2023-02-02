@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const Article = require("./models/article");
 const Comment = require("./models/comments");
 const Admin = require("./models/admin");
-
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
@@ -22,8 +21,6 @@ try {
   mongoose.connect(process.env.MONGOSTRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    maxPoolSize: 50,
-    wtimeoutMS: 2500,
     useNewUrlParser: true,
   });
 } catch (e) {
