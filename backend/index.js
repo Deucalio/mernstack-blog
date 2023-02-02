@@ -4,8 +4,6 @@ const Article = require("./models/article");
 const Comment = require("./models/comments");
 const Admin = require("./models/admin");
 
-
-
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
@@ -21,13 +19,17 @@ mongoose.set("strictQuery", true);
 
 try {
   // Connect to the MongoDB cluster
-  mongoose.connect(
-    process.env.MONGOSTRING,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => console.log("Mongoose is connected")
-  );
+  mongoose.connect(process.env.MONGOSTRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    poolSize: 1,
+  });
 } catch (e) {
   console.log("could not connect");
+}
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ path: __dirname + "/.env" });
 }
 
 const cloudinary = require("cloudinary").v2;
@@ -148,6 +150,13 @@ app.post("/login", async (req, res) => {
     return res.json({ status: "error", user: false });
   }
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend", "build")));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+  });
+}
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
